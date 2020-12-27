@@ -32,6 +32,9 @@
 *.out
 *.app
 
+# Debugger
+*.dSYM
+
 ### CMake ###
 CMakeCache.txt
 CMakeFiles
@@ -47,6 +50,7 @@ Extra/
 extra
 build/*
 .cmake
+os_kp_Xcode/
 
 ### CMake Patch ###
 # External projects
