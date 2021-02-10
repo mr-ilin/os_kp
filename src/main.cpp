@@ -21,22 +21,6 @@ enum workMode {
     unsupportedFileMode
 };
 
-#ifdef __APPLE__
-#include <mach/mach.h> 
-vm_size_t get_resident_size() {  
-    struct task_basic_info t_info;
-    mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
-
-    if (KERN_SUCCESS != task_info(mach_task_self(),
-                                  TASK_BASIC_INFO, (task_info_t)&t_info,
-                                  &t_info_count))
-    {
-        return -1;
-    }
-    return t_info.resident_size;
-}
-#endif
-
 void get_files_from_dir(const std::string& dir_path, std::vector<std::string>& file_paths) {
     DIR *dir;
     struct dirent *entry;

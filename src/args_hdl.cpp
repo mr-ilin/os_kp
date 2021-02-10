@@ -10,7 +10,7 @@
 #include <iostream>
 
 void print_usage() {
-    std::cout << "USAGE: editor [options] [dir]" << std::endl;
+    std::cout << "USAGE: editor [options] [path]" << std::endl;
     std::cout << "OPTIONS:" << std::endl;
     std::cout << "--help                 Prints out the usage information." << std::endl;
     std::cout << "-h                     Alias for --help." << std::endl;

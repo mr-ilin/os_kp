@@ -7,12 +7,9 @@ OBJ = $(SRC:.cpp=.o)
 
 $(EXECUTABLE) : $(OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJ) -o $(EXECUTABLE) $(LDFLAGS)
-
-# $(OBJ) : $(SRC)
-# 	$(CXX) $(CXXFLAGS) $(SRC)  $(LDFLAGS)
 	
 .cpp.o:
-	$(CC) $(CXXFLAGS) -c $< -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -c $< -o $@ $(LDFLAGS)
 
 clean:
 	rm -f *.o $(EXECUTABLE)

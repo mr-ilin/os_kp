@@ -20,6 +20,7 @@ private:
     long long GetAbsIdx(const size_t line_idx,  const long long idx) const;
     long long FindWordStartIdx(const size_t line_idx, const size_t word_idx) const;
     long long FindWordEndIdx(const size_t line_idx, const size_t word_idx) const;
+    size_t    CountSpaceAfter(const size_t word_start, const size_t word_len) const;
     
     void AbsInsertAfter(const long long abs_idx, const std::string& to_add);
     void AbsDelete(const size_t abs_idx, const size_t length);

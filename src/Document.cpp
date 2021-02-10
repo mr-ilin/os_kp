@@ -160,22 +160,14 @@ void Document::InsertAfter(const size_t line_idx, const long long idx, const std
 }
 
 void Document::AbsDelete(const size_t abs_idx, const size_t length) {
-    // check '\n' after last character to delete
-    size_t len = length;
-    if (abs_idx + length + 1 < _size) {
-        if (_map[abs_idx + length] == '\n') {
-            ++len;
-        }
-    }
-    
     size_t old_size = _size;
-    size_t new_size = _size - len;
+    size_t new_size = _size - length;
     for (size_t i = abs_idx; i < new_size; ++i) {
-        _map[i] = _map[i + len];
+        _map[i] = _map[i + length];
     }
     
     _map = (char*)remap_file(_path.data(), _map, old_size, new_size);
-    _size -= len;
+    _size -= length;
 }
 
 void Document::Delete(const size_t line_idx, const size_t idx, const size_t length) {
@@ -242,7 +234,7 @@ long long Document::FindWordStartIdx(const size_t line_idx, const size_t word_id
 
 long long Document::FindWordEndIdx(const size_t line_idx, const size_t word_idx) const {
     long long word_end = FindWordStartIdx(line_idx, word_idx);
-    if (word_end == -1) {
+    if (word_end < 0) {
         return word_end;
     }
     while (word_end < _size && _map[word_end] != '\n' && !isSep(_map[word_end])) {
@@ -273,6 +265,16 @@ void Document::InsertWordAfter(const size_t line_idx, const size_t word_idx, con
     AbsInsertAfter(word_end, " " + word);
 }
 
+size_t Document::CountSpaceAfter(const size_t word_start, const size_t word_len) const {
+    size_t res = 0;
+    size_t idx = word_start + word_len;
+    while (idx < _size && isSep(_map[idx])) {
+        ++res;
+        ++idx;
+    }
+    return res;
+}
+
 void Document::DeleteWord(const size_t line_idx, const size_t word_idx) {
     long long start_idx = FindWordStartIdx(line_idx, word_idx);
     if (start_idx < 0) {
@@ -280,6 +282,7 @@ void Document::DeleteWord(const size_t line_idx, const size_t word_idx) {
     }
 
     size_t length = GetWordLength(line_idx, word_idx);
+    length += CountSpaceAfter(start_idx, length);
     
     AbsDelete(start_idx, length);
 }
